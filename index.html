@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ulaanbaatar Weather</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #weather {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+
+        #weather p {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #555;
+        }
+
+        @media (max-width: 400px) {
+            #weather {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Улаанбаатарын цаг агаар : Яг одоо</h1>
+    <div id="weather"></div>
+    
+    <script>
+        const apiKey = 'a737dde076e3d5cb250bbd8ba5ee4298';
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Ulaanbaatar&appid=${apiKey}&units=metric`;
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const weatherDiv = document.getElementById('weather');
+                weatherDiv.innerHTML = `
+                    <p>Температур: ${data.main.temp}°C</p>
+                    <p>Төлөв: ${data.weather[0].description}</p>
+                    <p>Агаарын чийгшил: ${data.main.humidity}%</p>
+                    <p>Салхины хурд: ${data.wind.speed} м/c</p>
+                    <p>Даралт: ${data.main.pressure} hPa</p>
+                    <p>Харагдах хязгаар: ${data.visibility} м</p>
+                    <p>Нар мандах: ${new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</p>
+                    <p>Нар жаргах: ${new Date(data.sys.sunset * 1000).toLocaleTimeString()}</p>
+                `;
+            })
+            .catch(error => console.error('Error fetching weather data:', error));
+    </script>
+</body>
+</html>
